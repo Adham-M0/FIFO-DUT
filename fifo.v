@@ -1,5 +1,3 @@
-// Code your design here
-// Code your design here
 module FIFO #(parameter
     ADDR_WIDTH           = 5,
     DATA_WIDTH           = 8,
@@ -9,7 +7,7 @@ module FIFO #(parameter
   reg [ADDR_WIDTH-1:0] write_ptr=0,read_ptr=0;
 
     assign if_dut.empty   = ( write_ptr == read_ptr ) ? 1'b1 : 1'b0;
-    assign if_dut.full    = ( read_ptr == (write_ptr+1) ) ? 1'b1 : 1'b0;
+    assign if_dut.full    = ( read_ptr == (write_ptr+1'b1) ) ? 1'b1 : 1'b0;
 integer i;
   always @ (posedge clk , posedge if_dut.reset) begin
         if(if_dut.reset) begin

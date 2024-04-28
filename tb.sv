@@ -1,5 +1,4 @@
-// Code your testbench here
-// or browse Examples
+
 interface fifo_if (input clk);
 
   
@@ -50,8 +49,8 @@ class fifo_rand;
       fourth_data inside {[0:255]};
     // Constraints for write enable
     wr_enable_rand dist {
-      1'b0 := 50,
-      1'b1 := 50
+      1'b0 := 10,
+      1'b1 := 90
     };
      read_enable_rand != wr_enable_rand;
 
@@ -62,15 +61,15 @@ class fifo_rand;
     };
     
     reset_rand dist {
-      1'b0 := 95,
-      1'b1 := 5
+      1'b0 := 99,
+      1'b1 := 1
     };
       
     }
       
     endclass
     
-    module FIFO_tb (fifo_if.tb if_tb);
+    module FIFO_tb (fifo_if.tb if_tb,input clk);
       
         fifo_rand r0;
      
@@ -100,10 +99,13 @@ class fifo_rand;
         end 
           end
       
-  covergroup covp;
+ covergroup covp @(posedge clk);
 		CP1: coverpoint if_tb.cb.full;
 		CP2: coverpoint if_tb.cb.empty;
-	endgroup
+
+
+	
+endgroup
       covp cov1;
       initial begin 
         cov1=new();
@@ -116,11 +118,11 @@ class fifo_rand;
  
       fifo_if if0(clk) ; 
       FIFO dut (if0.dut,clk);
-      FIFO_tb t1 (if0.tb);
+      FIFO_tb t1 (if0.tb,clk);
       
       initial begin
     $dumpfile("dump.vcd");
     $dumpvars;
-    #1000 $finish;
+    #4000 $finish;
   end
     endmodule
